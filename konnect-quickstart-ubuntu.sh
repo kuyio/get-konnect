@@ -35,7 +35,7 @@ echo " "
 if ! command -v docker-compose &> /dev/null
 then
   echo "Docker Compose not found on the system, installing ..."
-  curl -L "https://github.com/docker/compose/releases/download/2.5.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  curl -L "https://github.com/docker/compose/releases/download/2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
 else
   echo "Docker Compose is present on this system, skipping installation."
