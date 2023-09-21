@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Set desired docker-compose version
+DOCKER_COMPOSE_VERSION=2.21.0
+DOCKER_PLATFORM=$(uname -s)
+DOCKER_ARCH=$(uname -m)
+
 echo " "
 read -p "This script will install KUY.io Konnect™ access server on your system. Continue? (Y/n): " choice
 case $choice in
@@ -12,7 +17,11 @@ echo "Checking for quickstart dependencies ..."
 if ! command -v curl &> /dev/null
 then
   echo " "
-  echo "Curl not found on the system, installing ..."
+  read -p "Curl not found on the system, should we run apt install -y curl? (Y/n): " choice
+  case $choice in
+    [Nn]* ) exit;;
+  esac
+
   apt install -y curl
 fi
 
@@ -26,7 +35,7 @@ if ! command -v docker &> /dev/null
 then
   echo "Docker not found on the system, installing ..."
   curl -fsSL https://get.docker.com -o get-docker.sh
-  sh get-docker.sh
+  sudo sh get-docker.sh
 else
   echo "Docker is present on this system, skipping installation."
 fi
@@ -35,7 +44,7 @@ echo " "
 if ! command -v docker-compose &> /dev/null
 then
   echo "Docker Compose not found on the system, installing ..."
-  curl -L "https://github.com/docker/compose/releases/download/2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  curl -L "https://github.com/docker/compose/releases/download/v${DOCKER_COMPOSE_VERSION}/docker-compose-${DOCKER_PLATFORM,,}-${DOCKER_ARCH}" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
 else
   echo "Docker Compose is present on this system, skipping installation."
